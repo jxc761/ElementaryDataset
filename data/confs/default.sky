@@ -1,0 +1,60 @@
+######### STANDARD CONDITIONS FOR A TERRESTRIAL ATMOSPHERE ###############
+
+
+
+##############
+## LOCATION ##
+##############
+
+// Longitude
+1.0
+
+// Longitude
+10
+// Latitude
+40
+// Day
+199
+// Time
+12.5
+// GMT
+0
+// Rotation(0-360)
+0
+
+
+##############
+## SUN DATA ##
+##############
+
+// Use sun (YES/NO)
+YES
+// Temperature in kelvins. 5777K is the closest value to sun spectral
+5777
+// Total power refered to the Earth's sun
+1
+
+#################
+## PLANET DATA ##
+#################
+
+// Planet reflectance
+0.25
+
+#####################
+## ATMOSPHERE DATA ##
+#####################
+
+// Ozone
+0.4
+// Water
+2
+// Angstrom Turbidity
+0.04
+// Wavelength Turbidity
+1.2
+// Aerosol albedo
+0.8
+// Asimmetry
+0.7
+

@@ -1,0 +1,11 @@
+All materials are from the standard maxwell render material library. 
+
+On Mac OSX maxwell v3, maxwell render material library is located: 
+  /Applications/Maxwell 3/materials database/mxm files
+  
+I rule out the materials that 
+  - don't have texture  
+  - are refelective 
+  - use displacement
+
+
