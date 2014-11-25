@@ -21,6 +21,8 @@ else #debug
   ROOT_OUTPUT_DIR="${PROJECT_DIR}/data/output"
   ROOT_INPUT_DIR="${PROJECT_DIR}/data/mxs"
   MAX_DEPTH=3
+  SAMPLE_LEVEL=24
+  RESOLUTION="128x128"
 fi
 
 MXS_LIST="$(find ${ROOT_INPUT_DIR} -maxdepth $MAX_DEPTH -iname "*.mxs")"
@@ -43,8 +45,10 @@ do
   SYS_NAME=$(uname)
   if [ "${SYS_NAME}" == "Linux" ] # on hpc
   then
-    echo "LINUX"
-    qsub -N "${MXS_NAME}"  -tc:64 -l walltime=120:00:00 -l nodes=1:ppn=1 -v MXS_FILE=$CUR_MXS_FILE,OUTPUT_DIR=$CUR_OUTPUT_DIR "${SCRIPT_DIR}/progress_render_one_mxs.sh"
+    
+    # qsub -N "${MXS_NAME}" -l walltime=120:00:00 -l nodes=1:ppn=1 -v MXS_FILE=$CUR_MXS_FILE,OUTPUT_DIR=$CUR_OUTPUT_DIR "${SCRIPT_DIR}/progress_render_one_mxs.sh" -t 2800000-2810000%64
+    qsub -N "${MXS_NAME}" -l walltime=120:00:00 -l nodes=1:ppn=1 -v MXS_FILE=$CUR_MXS_FILE,OUTPUT_DIR=$CUR_OUTPUT_DIR,SL=$SAMPLE_LEVEL,RES=$RESOLUTION "${SCRIPT_DIR}/render_one_mxs.sh"
+    
   else
     # for debug
     "${SCRIPT_DIR}/progress_render_one_mxs.sh" "${CUR_MXS_FILE}" "${CUR_OUTPUT_DIR}"
