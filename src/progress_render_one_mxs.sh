@@ -1,7 +1,16 @@
 #!/bin/bash
 
-#$MXS_FILE=$1
-#$OUTPUT_DIR=$2
+if [ $# == 2 ] 
+then  
+  MXS_FILE=$1
+  OUTPUT_DIR=$2
+fi
+
+if [ -z "${MXS_FILE}" -o -z "${OUTPUT_DIR}" ] 
+then
+  echo "usage: ./progress_render_one_mxs.sh MXS_FILE OUTPUT_DIR"
+  exit -1
+fi
 
 FILE_NAME=$(basename "${MXS_FILE}")
 NAME=${FILE_NAME%.*}
@@ -40,8 +49,8 @@ do
   #record start time
   START_TIME=$(date +%s) 
   
-  #use maxwell render to render mxs 
-  maxwell -nogui -nowait -trytoresume -mxs:"${MXI_FILE}" -res:$RESOLUTION -sl:$SL -mxi:"${MXI_FILE}" -output:"${IMG_FILE}" -dep:"/usr/local/maxwell-3.0/materials database/textures"
+  # use maxwell render to render mxs 
+  maxwell -nogui -nowait -trytoresume -mxs:"${MXS_FILE}" -res:$RESOLUTION -sl:$SL -mxi:"${MXI_FILE}" -output:"${IMG_FILE}" -dep:"/usr/local/maxwell-3.0/materials database/textures"
   
   #save current render result
   cp "${MXI_FILE}" "${SL_DIR}/${SL}.mxi"

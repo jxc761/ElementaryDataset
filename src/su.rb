@@ -30,8 +30,9 @@ def build_scene(fn_skp, fn_mxs)
   Sketchup.active_model.save(fn_skp)
   Sketchup.active_model.export(fn_mxs)
 end
-
-dn_data = "#{File.dirname(__FILE__)}/data"
+dn_script = "#{File.dirname(__FILE__)}"
+dn_root = "#{File.dirname(dn_script)}"
+dn_data = "#{dn_root}/data"
 
 #generate maxwell scene
 fn_skp = "#{dn_data}/studio/studio.skp"

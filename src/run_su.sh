@@ -2,16 +2,23 @@
 
 # find itself location
 SCRIPT_DIR=$(dirname $0)
-if [ $SCRIPT_DIR = '.' ]
+if [ $SCRIPT_DIR == '.' ]
 then
 SCRIPT_DIR=$(pwd)
 fi
 
 ROOT_DIR=$(dirname $SCRIPT_DIR)
 
+# make clear output directories
 DATA_DIR="${ROOT_DIR}/data"
-rm -r "${DATA_DIR}/studio"
-rm -r "${DATA_DIR}/shootscript"
+if [ -d "${DATA_DIR}/studio" ]
+then
+  rm -r "${DATA_DIR}/studio"
+fi
+if [ -d "${DATA_DIR}/shootscript" ]
+then  
+  rm -r "${DATA_DIR}/shootscript"
+fi
 mkdir "${DATA_DIR}/studio"
 mkdir "${DATA_DIR}/shootscript"
 
@@ -21,14 +28,7 @@ if [ "$SU" == "" ];then
    echo "Cannot find Sketchup. Please install Sketchup first..."
    exit
 fi
-RUBY_FILE="${ROOT_DIR}/su.rb"
+RUBY_FILE="$SCRIPT_DIR/su.rb"
 
 open --wait-apps "$SU"  --args -RubyStartup "${RUBY_FILE}"
-
-# use pymaxwell to generate scenes with different materials 
-# python ./maxwell.py
-
-#upload data to hpc
-
-#render all scenes
 

@@ -1,31 +1,54 @@
 #!/bin/bash
 
-ROOT_INPUT_DIR=$1
-ROOT_OUTPUT_DIR=$2
-DEPTH=$3
 
-# for debug
-# ROOT_OUTPUT_DIR="/Users/Jing/Dropbox/3DMotion/ElementaryDataset/output"
-# ROOT_INPUT_DIR="/Users/Jing/Dropbox/3DMotion/ElementaryDataset"
-# DEPTH=2
+SCRIPT_DIR=$(dirname $0)
+if [ $SCRIPT_DIR == '.' ]
+then
+SCRIPT_DIR=$(pwd)
+fi
 
-for CUR_MXS_FILE in $(find "${ROOT_INPUT_DIR}" -depth $DEPTH -name *.mxs)
-do
-  #get the relative path of current mxs file to the root_input
-  CUR_INPUT_DIR=$(dirname $CUR_MXS_FILE)
-  REL_PATH=${CUR_INPUT_DIR#${ROOT_INPUT_DIR}/}
 
-  CUR_OUTPUT_DIR="${ROOT_OUTPUT_DIR}/${REL_PATH}"
+if [ $# == 3 ] 
+then
+  ROOT_INPUT_DIR=$1
+  ROOT_OUTPUT_DIR=$2
+  MAX_DEPTH=$3
   
-  # if $CUR_OUTPUT_DIR doesn't exist.
+else #debug
+  echo "usage: ./render_all_mxs.sh <ROOT_INPUT_DIR> <ROOT_OUTPUT_DIR> <MAX_DEPTH>"
+  echo "Run in default mode: "
+  PROJECT_DIR=$(dirname "${SCRIPT_DIR}")
+  ROOT_OUTPUT_DIR="${PROJECT_DIR}/data/output"
+  ROOT_INPUT_DIR="${PROJECT_DIR}/data/mxs"
+  MAX_DEPTH=3
+fi
+
+MXS_LIST="$(find ${ROOT_INPUT_DIR} -maxdepth $MAX_DEPTH -iname "*.mxs")"
+for CUR_MXS_FILE in ${MXS_LIST}
+do
+  MXS_NAME=$(basename "${CUR_MXS_FILE}")
+  
+  #get the path of current mxs file relative to the root_input
+  CUR_INPUT_DIR=$(dirname "${CUR_MXS_FILE}")
+  RELATIVE_PATH=${CUR_INPUT_DIR#${ROOT_INPUT_DIR}/}
+  CUR_OUTPUT_DIR="${ROOT_OUTPUT_DIR}/${RELATIVE_PATH}"
+  
+  # echo "OUTPUT_DIR    : ${CUR_OUTPUT_DIR}"
+  # echo "MXS_FILE      : ${CUR_MXS_FILE}"
+  # if $CUR_OUTPUT_DIR doesn't exist
   if [ ! -d "$CUR_OUTPUT_DIR" ]; then
     mkdir -p "$CUR_OUTPUT_DIR" 
   fi
-  
-  
-  echo "$CUR_OUTPUT_DIR"
-  echo "$CUR_MXS_FILE"
-  
-  # qsub -N "${MXS_NAME}"  -l walltime=96:00:00 -l nodes=1:ppn=1 -v MXS_FILE=$CUR_MXS_FILE,OUTPUT_DIR=$CURRENT_OUTPUT_DIR ./progress_render_one_mxs.sh
-  
+ 
+  SYS_NAME=$(uname)
+  if [ "${SYS_NAME}" == "Linux" ] # on hpc
+  then
+    echo "LINUX"
+    qsub -N "${MXS_NAME}"  -tc:64 -l walltime=120:00:00 -l nodes=1:ppn=1 -v MXS_FILE=$CUR_MXS_FILE,OUTPUT_DIR=$CUR_OUTPUT_DIR "${SCRIPT_DIR}/progress_render_one_mxs.sh"
+  else
+    # for debug
+    "${SCRIPT_DIR}/progress_render_one_mxs.sh" "${CUR_MXS_FILE}" "${CUR_OUTPUT_DIR}"
+    exit -2
+  fi
+ 
 done
