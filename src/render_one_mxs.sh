@@ -27,7 +27,7 @@ SL_DIR="${OUTPUT_DIR}/${NAME}"
 #FINAL_SL_LEVEL=30
 #SL_STEP=2
 
-
+echo "TIME           : $(date %F\ \ %F)    ">> $LOG_FILE
 echo "MXS_FILE       : ${MXS_FILE}         ">> $LOG_FILE
 echo "OUTPUT_DIR     : ${OUTPUT_DIR}       ">> $LOG_FILE     # the output directory
 echo "MXI_FILE       : ${MXI_FILE}         ">> $LOG_FILE
@@ -57,7 +57,7 @@ cp "${MXI_FILE}" "${SL_DIR}/${SL}.mxi"
 cp "${IMG_FILE}" "${SL_DIR}/${SL}.png"
 
 # record stop time
-END_TIEM=$(date +%s) 
+END_TIME=$(date +%s) 
 
 # compute render time 
 DIFF=$(( $END_TIME - $START_TIME ))

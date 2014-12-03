@@ -30,8 +30,9 @@ fi
 cd "${EXP_DIR}/src"
 echo "Begin to build mxs files"
 python "./maxwell.py"
+echo "Finsh build mxs files"
+#echo "Begin to render"
+#./sequentially_render_all_mxs.sh
 
-echo "Begin to render"
-./render_all_mxs.sh
-
+rm "${HOME}/${FN_TAR}"
 cd "${OLD_PWD}"

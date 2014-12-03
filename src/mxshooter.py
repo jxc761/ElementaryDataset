@@ -2,10 +2,12 @@
 
 from pymaxwell import *
 
-
+# the deafult lenght unit export by sketchup is inch, but the maxwell uses m.
 def to_m(aa):
 	return [ i * 0.0254 for i in aa]
 	
+# if (a, b, c) will be transformed to (a, -c, b) coordinate transformation, 
+# i.e. the su_x_axis -> mx_x_aix, su_z_axis->mx_y	
 def to_vector(a):
 	return Cvector(a[0], a[2], a[1])
 	

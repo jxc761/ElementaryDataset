@@ -29,4 +29,7 @@ tar czf "./${FN_TAR}" "./src/" "./data/"
 
 scp "${PROJECT_DIR}/${FN_TAR}" jxc761@hpcviz.case.edu:~/
 scp $SRC_DIR/run_maxwell_on_hpc.sh jxc761@hpcviz.case.edu:~/
+
+rm "./${FN_TAR}"
+
 cd "${OLD_PWD}"
